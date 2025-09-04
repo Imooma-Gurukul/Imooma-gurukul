@@ -1,0 +1,38 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!--  Home Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/</loc>
+<changefreq>weekly</changefreq>
+<priority>1.0</priority>
+</url>
+<!--  About Us Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/about.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.9</priority>
+</url>
+<!--  Academics Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/academics.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.9</priority>
+</url>
+<!--  Hostel Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/hostel.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.9</priority>
+</url>
+<!--  Admission Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/admission.html</loc>
+<changefreq>weekly</changefreq>
+<priority>1.0</priority>
+</url>
+<!--  Contact Page  -->
+<url>
+<loc>https://imooma-gurukul.github.io/Imooma-gurukul/contact.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+</urlset>
