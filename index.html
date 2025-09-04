@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imooma Gurukul School – Nurturing Minds, Shaping Future</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --color-blue-soft: #bfdbfe;
+            --color-blue-dark: #2563eb;
+            --color-gold: #ffd700;
+            --color-dark-blue: #1c2e4a;
+        }
+        body { font-family: 'Poppins', sans-serif; background-color: #f0f4f8; overflow-x: hidden; }
+        .bg-gold { background-color: var(--color-gold); }
+        .text-gold { color: var(--color-gold); }
+        .bg-blue-soft { background-color: var(--color-blue-soft); }
+        .bg-blue-dark { background-color: var(--color-blue-dark); }
+        .shadow-soft { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); }
+        .hero-section {
+            background-image: url('https://placehold.co/1920x1080/4a90e2/ffffff?text=Imooma+Gurukul+School');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 60vh;
+        }
+        .hero-overlay {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: var(--color-blue-soft);
+            padding: 0.5rem 0;
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .card-hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+        }
+        .page { display: none; }
+        .active-page { display: block; }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timeline-item { position: relative; padding-left: 2rem; border-left: 4px solid var(--color-blue-soft); margin-left: 1rem; }
+        .timeline-dot { position: absolute; left: -10px; top: 0; transform: translateY(0.2rem); width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-blue-dark); border: 3px solid var(--color-blue-soft); }
+
+        .header-shadow-on-scroll {
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .banner-ad {
+            background-color: var(--color-dark-blue);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .banner-ad img {
+            max-width: 100px;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+        .banner-ad h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .banner-ad p {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .banner-ad {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+            }
+            .banner-ad img {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Tailwind CSS Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-soft': '#bfdbfe',
+                        'blue-dark': '#2563eb',
+                        'gold': '#ffd700',
+                        'dark-blue': '#1c2e4a',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Modal for confirmation messages -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
+    <div id="messageModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl p-8 z-50 w-11/12 md:w-auto max-w-lg">
+        <h3 id="modalTitle" class="text-xl md:text-2xl font-bold mb-4 text-blue-dark"></h3>
+        <p id="modalMessage" class="text-gray-700 mb-6 leading-relaxed"></p>
+        <button onclick="closeModal()" class="bg-blue-dark text-white font-bold py-3 px-6 rounded-full w-full hover:bg-blue-dark/90 transition-colors duration-300">Close</button>
+    </div>
+
+    <!-- Header and Navigation -->
+    <header id="main-header" class="sticky top-0 z-40 bg-white shadow-soft py-4 px-4 md:px-12 flex flex-col md:flex-row items-center justify-between transition-shadow duration-300">
+        <div class="flex items-center space-x-4 mb-4 md:mb-0">
+            <span class="text-3xl md:text-4xl font-extrabold text-blue-dark">Imooma Gurukul School</span>
+        </div>
+        
+        <div class="flex-grow flex items-center justify-center overflow-hidden w-full md:w-auto md:max-w-xl rounded-full">
+            <marquee class="text-sm font-medium text-blue-dark py-2">
+                Admissions Open for Nursery to Class 12 | Hostel Options Available: 24 hr, 14 hr, 12 hr | Founder: Jaishanker Kumar | Principal: Rituraj Chaube | Please contact on 7004261546
+            </marquee>
+        </div>
+
+        <nav class="mt-4 md:mt-0 hidden md:block">
+            <ul class="flex flex-wrap space-x-2 md:space-x-6 text-sm md:text-base font-semibold">
+                <li><a href="#home" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">Home</a></li>
+                <li><a href="#about" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">About</a></li>
+                <li><a href="#academics" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">Academics</a></li>
+                <li><a href="#hostel" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">Hostel</a></li>
+                <li><a href="#admission" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">Admission</a></li>
+                <li><a href="#contact" class="nav-link text-gray-600 hover:text-blue-dark hover:bg-blue-soft px-4 py-2 rounded-full transition-all duration-300">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- Home Page -->
+        <section id="homePage" class="page active-page">
+            <div class="hero-section rounded-xl shadow-xl mb-12">
+                <div class="hero-overlay text-center">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-blue-dark mb-4">Imooma Gurukul – Nurturing Minds, Shaping Future.</h1>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mt-6">
+                        <a href="#" id="downloadProspectus" class="bg-gold text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">Download Prospectus</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect text-center fade-in">
+                    <div class="text-blue-dark text-4xl mb-4"><i class="ri-book-2-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">English Medium Education</h3>
+                    <p class="text-gray-600 text-sm">Providing high-quality education in a modern English medium setting.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect text-center fade-in">
+                    <div class="text-blue-dark text-4xl mb-4"><i class="ri-pencil-ruler-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">NCERT Curriculum</h3>
+                    <p class="text-gray-600 text-sm">Following the nationally recognized NCERT curriculum for academic excellence.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect text-center fade-in">
+                    <div class="text-blue-dark text-4xl mb-4"><i class="ri-building-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Hostel Facilities</h3>
+                    <p class="text-gray-600 text-sm">Safe and nurturing environment with various hostel options for students.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect text-center fade-in">
+                    <div class="text-blue-dark text-4xl mb-4"><i class="ri-team-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Nursery to Class 12</h3>
+                    <p class="text-gray-600 text-sm">Comprehensive education from early years through senior secondary.</p>
+                </div>
+            </div>
+
+            <div class="marquee-container rounded-xl shadow-soft mb-12">
+                <marquee class="text-gray-700 font-medium">
+                    "Education is the most powerful weapon which you can use to change the world." - Nelson Mandela | "Discipline is the bridge between goals and accomplishment." - Jim Rohn | "The beautiful thing about learning is that no one can take it away from you." - B.B. King
+                </marquee>
+            </div>
+        </section>
+
+        <!-- About Us Page -->
+        <section id="aboutPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">About Our School</h1>
+            <div class="bg-white p-8 rounded-xl shadow-soft mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 fade-in">
+                    <div class="text-center md:text-left">
+                        <img src="https://placehold.co/150x150/bfdbfe/2563eb?text=Founder" alt="Founder" class="rounded-full w-24 h-24 mx-auto md:mx-0 mb-4">
+                        <h3 class="text-xl font-bold text-blue-dark">Jaishanker Kumar</h3>
+                        <p class="text-gray-600">Founder</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <img src="https://placehold.co/150x150/bfdbfe/2563eb?text=Principal" alt="Principal" class="rounded-full w-24 h-24 mx-auto md:mx-0 mb-4">
+                        <h3 class="text-xl font-bold text-blue-dark">Rituraj Chaube</h3>
+                        <p class="text-gray-600">Principal</p>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-blue-dark mb-4 fade-in">Our Vision & Mission</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-gold">Vision</h3>
+                        <p class="text-gray-600">To empower village students with quality education for a stronger nation.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-gold">Mission</h3>
+                        <p class="text-gray-600">Providing holistic development through academics, culture, sports, and discipline.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-soft fade-in">
+                <h2 class="text-2xl font-bold text-blue-dark mb-4">Our Journey</h2>
+                <div class="space-y-8 mt-4">
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-lg font-semibold text-blue-dark">2023 - School Founded</h3>
+                        <p class="text-sm text-gray-600">Imooma Gurukul School was founded with a mission to serve the local community.</p>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <h3 class="text-lg font-semibold text-blue-dark">2025 - Hostel Facilities Introduced</h3>
+                        <p class="text-sm text-gray-600">We introduced various hostel facilities to support students from neighboring areas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Academics Page -->
+        <section id="academicsPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Academics & Curriculum</h1>
+            <div class="bg-white p-8 rounded-xl shadow-soft mb-8">
+                <h2 class="text-2xl font-bold text-blue-dark mb-4">Our Educational Pillars</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect fade-in">
+                        <div class="text-blue-dark text-3xl mb-4"><i class="ri-book-2-line"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Primary School (Nursery - Class 5)</h3>
+                        <p class="text-sm text-gray-600">Focus on foundational skills, interactive learning, and creative development.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect fade-in">
+                        <div class="text-blue-dark text-3xl mb-4"><i class="ri-bookmark-line"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Middle School (Class 6 - 8)</h3>
+                        <p class="text-sm text-gray-600">Emphasis on core subjects, critical thinking, and exploration of interests.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect fade-in">
+                        <div class="text-blue-dark text-3xl mb-4"><i class="ri-edit-line"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Secondary School (Class 9 - 10)</h3>
+                        <p class="text-sm text-gray-600">Rigorous academic preparation for board exams and career guidance.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect fade-in">
+                        <div class="text-blue-dark text-3xl mb-4"><i class="ri-graduation-cap-line"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Senior Secondary (Class 11 - 12)</h3>
+                        <p class="text-sm text-gray-600">Specialized streams (Science, Commerce, Arts) for higher education.</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-center text-lg mt-8">We follow the **NCERT Curriculum** to ensure a high standard of education aligned with national guidelines.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-soft fade-in mt-8">
+                <h2 class="text-2xl font-bold text-blue-dark text-center mb-8">Activities & Programs</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+                    <div class="bg-blue-soft p-6 rounded-xl text-center card-hover-effect">
+                        <div class="text-blue-dark text-4xl mb-4"><i class="ri-football-line"></i></div>
+                        <h3 class="font-bold text-sm">Sports</h3>
+                    </div>
+                    <div class="bg-blue-soft p-6 rounded-xl text-center card-hover-effect">
+                        <div class="text-blue-dark text-4xl mb-4"><i class="ri-flask-line"></i></div>
+                        <h3 class="font-bold text-sm">Labs</h3>
+                    </div>
+                    <div class="bg-blue-soft p-6 rounded-xl text-center card-hover-effect">
+                        <div class="text-blue-dark text-4xl mb-4"><i class="ri-group-line"></i></div>
+                        <h3 class="font-bold text-sm">Cultural</h3>
+                    </div>
+                    <div class="bg-blue-soft p-6 rounded-xl text-center card-hover-effect">
+                        <div class="text-blue-dark text-4xl mb-4"><i class="ri-computer-line"></i></div>
+                        <h3 class="font-bold text-sm">Computers</h3>
+                    </div>
+                    <div class="bg-blue-soft p-6 rounded-xl text-center card-hover-effect">
+                        <div class="text-blue-dark text-4xl mb-4"><i class="ri-compass-line"></i></div>
+                        <h3 class="font-bold text-sm">Workshops</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hostel Page -->
+        <section id="hostelPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Hostel Facilities</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect flex flex-col items-center text-center fade-in">
+                    <div class="text-blue-dark text-5xl mb-4"><i class="ri-building-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">24-Hour Hostel</h3>
+                    <p class="text-gray-600 mb-4">Complete boarding facility with balanced meals, library access, and a dedicated study hall for all-round development.</p>
+                    <button class="bg-blue-dark text-white font-bold py-2 px-4 rounded-full mt-auto" onclick="openAdmissionForm('24-Hour Hostel Admission')">Apply Now</button>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect flex flex-col items-center text-center fade-in">
+                    <div class="text-blue-dark text-5xl mb-4"><i class="ri-sun-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">14-Hour Hostel</h3>
+                    <p class="text-gray-600 mb-4">Day boarding option with lunch and evening snacks, followed by a supervised study period to help students.</p>
+                    <button class="bg-blue-dark text-white font-bold py-2 px-4 rounded-full mt-auto" onclick="openAdmissionForm('14-Hour Hostel Admission')">Apply Now</button>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-soft card-hover-effect flex flex-col items-center text-center fade-in">
+                    <div class="text-blue-dark text-5xl mb-4"><i class="ri-moon-line"></i></div>
+                    <h3 class="text-xl font-bold mb-2">12-Hour Hostel</h3>
+                    <p class="text-gray-600 mb-4">Extended school timings with extra academic support and evening study sessions for focused learning.</p>
+                    <button class="bg-blue-dark text-white font-bold py-2 px-4 rounded-full mt-auto" onclick="openAdmissionForm('12-Hour Hostel Admission')">Apply Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admission Page -->
+        <section id="admissionPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Admission Form</h1>
+            <div class="bg-white p-8 rounded-xl shadow-soft max-w-2xl mx-auto">
+                <form id="admissionForm" class="space-y-4">
+                    <div>
+                        <label for="studentName" class="block text-sm font-semibold text-gray-700 mb-1">Student Name</label>
+                        <input type="text" id="studentName" name="studentName" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                    </div>
+                    <div>
+                        <label for="parentName" class="block text-sm font-semibold text-gray-700 mb-1">Parent Name</label>
+                        <input type="text" id="parentName" name="parentName" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                    </div>
+                    <div>
+                        <label for="contactNumber" class="block text-sm font-semibold text-gray-700 mb-1">Contact Number</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                    </div>
+                    <div>
+                        <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Village / Address</label>
+                        <textarea id="address" name="address" rows="3" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="classApplied" class="block text-sm font-semibold text-gray-700 mb-1">Class Applied For</label>
+                            <select id="classApplied" name="classApplied" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                                <option value="">Select Class</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="LKG">LKG</option>
+                                <option value="UKG">UKG</option>
+                                <option value="Class 1">Class 1</option>
+                                <option value="Class 2">Class 2</option>
+                                <option value="Class 3">Class 3</option>
+                                <option value="Class 4">Class 4</option>
+                                <option value="Class 5">Class 5</option>
+                                <option value="Class 6">Class 6</option>
+                                <option value="Class 7">Class 7</option>
+                                <option value="Class 8">Class 8</option>
+                                <option value="Class 9">Class 9</option>
+                                <option value="Class 10">Class 10</option>
+                                <option value="Class 11">Class 11</option>
+                                <option value="Class 12">Class 12</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="admissionType" class="block text-sm font-semibold text-gray-700 mb-1">Admission Type</label>
+                            <select id="admissionType" name="admissionType" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                                <option value="">Select Type</option>
+                                <option value="Day School Admission">Day School Admission</option>
+                                <option value="24-Hour Hostel Admission">24-Hour Hostel Admission</option>
+                                <option value="14-Hour Hostel Admission">14-Hour Hostel Admission</option>
+                                <option value="12-Hour Hostel Admission">12-Hour Hostel Admission</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-dark text-white font-bold py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">Submit Admission Form</button>
+                </form>
+                <div id="admission-confirmation" class="mt-8 p-6 bg-blue-soft rounded-lg hidden">
+                    <p class="text-blue-dark font-bold text-center">Your admission request has been submitted successfully!</p>
+                    <div class="mt-4 flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-4">
+                        <button id="downloadPdfBtn" class="bg-gold text-white font-bold py-2 px-4 rounded-full">Download Form (PDF)</button>
+                        <a id="whatsappLink" href="#" target="_blank" class="bg-green-500 text-white font-bold py-2 px-4 rounded-full text-center flex items-center justify-center space-x-2">
+                            <i class="ri-whatsapp-fill"></i>
+                            <span>Send via WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Page -->
+        <section id="contactPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Contact Us</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-soft fade-in">
+                    <h2 class="text-2xl font-bold text-blue-dark mb-4">Get In Touch</h2>
+                    <p class="mb-4 text-gray-600">Please contact on <a href="tel:7004261546" class="text-blue-dark font-bold hover:underline">7004261546</a> or use the form below.</p>
+                    <form id="contactForm" class="space-y-4">
+                        <div>
+                            <label for="contactName" class="block text-sm font-semibold text-gray-700 mb-1">Your Name</label>
+                            <input type="text" id="contactName" name="contactName" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                        </div>
+                        <div>
+                            <label for="contactEmail" class="block text-sm font-semibold text-gray-700 mb-1">Your Email</label>
+                            <input type="email" id="contactEmail" name="contactEmail" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft">
+                        </div>
+                        <div>
+                            <label for="contactMessage" class="block text-sm font-semibold text-gray-700 mb-1">Message</label>
+                            <textarea id="contactMessage" name="contactMessage" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-soft"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-dark text-white font-bold py-3 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">Send Message</button>
+                    </form>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-soft fade-in">
+                    <h2 class="text-2xl font-bold text-blue-dark mb-4">Our Details</h2>
+                    <ul class="space-y-4 text-gray-600">
+                        <li>
+                            <div class="flex items-center space-x-2">
+                                <i class="ri-phone-line text-blue-dark text-lg"></i>
+                                <span>Phone: <a href="tel:7004261546" class="hover:underline">7004261546</a></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center space-x-2">
+                                <i class="ri-mail-line text-blue-dark text-lg"></i>
+                                <span>Email: <a href="mailto:info@imoomagurukulschool.com" class="hover:underline">info@imoomagurukulschool.com</a></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center space-x-2">
+                                <i class="ri-map-pin-line text-blue-dark text-lg"></i>
+                                <span>Address: Chhotaki Basauli, Bihar, India</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-blue-dark mb-2">Find Us on Map</h3>
+                        <div class="rounded-xl overflow-hidden shadow-soft">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3550.8354964645396!2d84.5244585149303!3d26.54228918237372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399335a4d46c8731%3A0xc47e33f3829035e4!2sChhotaki%20Basauli%2C%20Bihar%2C%20India!5e0!3m2!1sen!2s!4v1628198758872!5m2!1sen!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation for Mobile -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-lg p-2 md:hidden">
+        <ul class="flex justify-around items-center text-xs font-semibold text-gray-600">
+            <li>
+                <a href="#home" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-home-4-line text-xl"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#about" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-group-line text-xl"></i>
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="#academics" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-graduation-cap-line text-xl"></i>
+                    <span>Academics</span>
+                </a>
+            </li>
+            <li>
+                <a href="#hostel" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-building-line text-xl"></i>
+                    <span>Hostel</span>
+                </a>
+            </li>
+            <li>
+                <a href="#admission" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-edit-line text-xl"></i>
+                    <span>Admission</span>
+                </a>
+            </li>
+            <li>
+                <a href="#contact" class="bottom-nav-link flex flex-col items-center p-2 rounded-lg transition-colors duration-200 hover:text-blue-dark hover:bg-blue-soft">
+                    <i class="ri-phone-line text-xl"></i>
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <footer class="bg-blue-dark text-white p-6 text-center mt-12">
+        <p>&copy; 2025 Imooma Gurukul School. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- Core Application Logic ---
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const bottomNavLinks = document.querySelectorAll('.bottom-nav-link');
+        const pages = document.querySelectorAll('.page');
+        const admissionForm = document.getElementById('admissionForm');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const whatsappLink = document.getElementById('whatsappLink');
+        const confirmationSection = document.getElementById('admission-confirmation');
+        const downloadProspectusBtn = document.getElementById('downloadProspectus');
+
+        // Modal functions
+        function showModal(title, message) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('messageModal').classList.remove('hidden');
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('messageModal').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+        window.closeModal = closeModal;
+
+        // Function to navigate between pages
+        function navigateTo(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active-page');
+                page.classList.remove('is-visible');
+            });
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.add('active-page');
+                setTimeout(() => {
+                    document.querySelectorAll('.active-page .fade-in').forEach(el => el.classList.add('is-visible'));
+                }, 100);
+            }
+        }
+
+        // Set up navigation listeners for both top and bottom bars
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.target.getAttribute('href').substring(1);
+                navigateTo(pageId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+        bottomNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.target.getAttribute('href').substring(1);
+                navigateTo(pageId);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Set initial page and animations on load
+        document.addEventListener('DOMContentLoaded', () => {
+            navigateTo('home');
+        });
+
+        // Function to open the admission form with a pre-selected type
+        function openAdmissionForm(type) {
+            document.getElementById('admissionType').value = type;
+            navigateTo('admission');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        window.openAdmissionForm = openAdmissionForm;
+
+        // --- Admission Form Submission Logic ---
+        admissionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                studentName: document.getElementById('studentName').value,
+                parentName: document.getElementById('parentName').value,
+                contactNumber: document.getElementById('contactNumber').value,
+                address: document.getElementById('address').value,
+                classApplied: document.getElementById('classApplied').value,
+                admissionType: document.getElementById('admissionType').value
+            };
+
+            // Generate PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.setTextColor(37, 99, 235);
+            doc.text("Imooma Gurukul School", 10, 20);
+            doc.setFontSize(14);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Admission Form Details", 10, 30);
+            doc.setFontSize(12);
+            doc.text(`Student Name: ${formData.studentName}`, 10, 50);
+            doc.text(`Parent Name: ${formData.parentName}`, 10, 60);
+            doc.text(`Contact Number: ${formData.contactNumber}`, 10, 70);
+            doc.text(`Village / Address: ${formData.address}`, 10, 80);
+            doc.text(`Class Applied For: ${formData.classApplied}`, 10, 90);
+            doc.text(`Admission Type: ${formData.admissionType}`, 10, 100);
+
+            // Show confirmation message and buttons
+            confirmationSection.classList.remove('hidden');
+            downloadPdfBtn.onclick = () => doc.save(`${formData.studentName}_AdmissionForm.pdf`);
+
+            // WhatsApp button setup
+            const whatsappMessage = encodeURIComponent(`Hello Imooma Gurukul School, I am applying for admission with the following details:\n\nStudent Name: ${formData.studentName}\nParent Name: ${formData.parentName}\nClass: ${formData.classApplied}\nAdmission Type: ${formData.admissionType}`);
+            whatsappLink.href = `https://wa.me/917004261546?text=${whatsappMessage}`;
+
+            showModal("Success!", "Your admission request has been submitted successfully! You can download a copy or send it via WhatsApp.");
+            admissionForm.reset();
+        });
+
+        // Placeholder for prospectus PDF generation
+        downloadProspectusBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(22);
+            doc.setTextColor(37, 99, 235);
+            doc.text("Imooma Gurukul School Prospectus", 10, 20);
+            doc.setFontSize(14);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Welcome to Imooma Gurukul School. This document contains key information about our school.", 10, 40);
+            doc.text("Vision: To empower village students with quality education for a stronger nation.", 10, 60);
+            doc.text("Mission: To provide holistic development through academics, culture, sports, and discipline.", 10, 70);
+            doc.save("Imooma_Gurukul_School_Prospectus.pdf");
+            showModal("Download Complete", "The prospectus PDF has been generated and downloaded to your device.");
+        });
+
+        // Add shadow to header on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-shadow-on-scroll');
+            } else {
+                header.classList.remove('header-shadow-on-scroll');
+            }
+        });
+    </script>
+</body>
+</html>
