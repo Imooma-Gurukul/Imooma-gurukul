@@ -75,6 +75,29 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* URGENT BRIEFING MODAL STYLE */
+        #urgentBriefingModal {
+            position: fixed;
+            top: 20px; /* Position it high on the screen */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 60; /* Higher than other modals */
+            min-width: 280px;
+            max-width: 90%;
+            animation: fadeInOut 3s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+
         @media (max-width: 767px) {
             main.container { padding-bottom: 70px; }
             .carousel-container { height: 40vh; }
@@ -128,6 +151,17 @@
             }
         }
     </script>
+    
+    <!-- 🔥 URGENT BRIEFING MODAL (AUTO-DISMISSING) 🔥 -->
+    <div id="urgentBriefingModal" class="hidden">
+        <div class="bg-danger text-white p-4 rounded-xl shadow-extreme flex items-center space-x-3 border-4 border-gold">
+            <i class="ri-alert-line text-2xl text-gold animate-pulse"></i>
+            <p class="font-black text-sm md:text-base uppercase tracking-wide">
+                ATTENTION: Admission Window is closing soon. Discipline is non-negotiable.
+            </p>
+        </div>
+    </div>
+
 
     <!-- Modal for confirmation messages (Now used for general messages and 'More' menu) -->
     <div id="modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
@@ -346,10 +380,28 @@
             </div>
         </section>
 
-        <!-- ADMISSION Page -->
+        <!-- ADMISSION Page (UPDATED WITH PRE-QUALIFICATION FILTER) -->
         <section id="admissionPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Mission Application Center</h1>
-            <div class="bg-white p-8 rounded-xl shadow-extreme max-w-2xl mx-auto">
+            
+            <!-- Admission Filter/Pre-Qualification Section -->
+            <div id="preQualification" class="bg-danger text-white p-8 rounded-xl shadow-extreme max-w-2xl mx-auto text-center">
+                <div class="text-gold text-4xl mb-4"><i class="ri-shield-keyhole-line"></i></div>
+                <h2 class="text-2xl font-extrabold mb-2 uppercase">AUTHORIZATION REQUIRED</h2>
+                <p class="text-gray-200 mb-6 font-semibold">
+                    We do not accept all applications. First, prove your seriousness. <br>
+                    हम हर किसी को नहीं लेते। पहले अपनी योग्यता साबित करो।
+                </p>
+                <button onclick="startPreTest()" class="bg-gold text-blue-dark font-black py-3 px-8 rounded-full shadow-lg hover:bg-gold/80 transition-all duration-300 text-lg">
+                    START PRE-TEST
+                </button>
+                <p class="text-xs italic mt-3 text-gray-300">Warning: Only serious candidates need apply. (चेतावनी: केवल गंभीर उम्मीदवार ही आवेदन करें।)</p>
+            </div>
+
+
+            <!-- Actual WhatsApp Form (Hidden by default, shown after "Pre-Test" is "passed") -->
+            <div id="admissionFormContainer" class="bg-white p-8 rounded-xl shadow-extreme max-w-2xl mx-auto mt-8 hidden">
+                <h2 class="text-xl font-bold text-danger mb-4">MISSION APPLICATION FORM (Access Granted)</h2>
                 <form id="admissionForm" class="space-y-4">
                     <p class="text-danger font-bold text-center mb-4">NOTE: All applications are processed via WhatsApp for immediate response.</p>
                     <div>
@@ -402,13 +454,27 @@
             </div>
         </section>
 
-        <!-- GALLERY Page -->
+        <!-- GALLERY Page (PASSWORD PROTECTED) -->
         <section id="galleryPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">School Gallery: Where Warriors Are Forged</h1>
-            <p class="text-center text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Witness the discipline and focus that defines our campus. Every picture is a proof of our commitment to excellence and rigor.
-            </p>
-            <div class="gallery-grid" id="gallery-grid">
+            
+            <!-- Gallery Lock Screen -->
+            <div id="galleryLockScreen" class="bg-gray-200 p-8 rounded-xl shadow-extreme max-w-lg mx-auto text-center fade-in">
+                <div class="text-blue-dark text-5xl mb-4"><i class="ri-lock-2-fill"></i></div>
+                <h2 class="text-2xl font-extrabold mb-4 text-danger">ACCESS RESTRICTED: CONFIDENTIAL IMAGES</h2>
+                <p class="text-gray-700 mb-4">
+                    This gallery contains privileged images showing the true rigor of IMOOMA Gurukul. Authorization is required.
+                </p>
+                <input type="password" id="galleryPassword" placeholder="Enter IMOOMA Key Code (Password)" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-danger text-center font-mono mb-4">
+                <button onclick="unlockGallery()" class="w-full bg-danger text-white font-black py-3 rounded-full shadow-lg hover:bg-danger/80 transition-all duration-300">
+                    UNLOCK GALLERY
+                </button>
+                <p class="text-xs italic mt-4 text-blue-dark">Powered by IMOOMA GURUKUL</p>
+                <p id="galleryLockError" class="text-danger font-bold mt-2 hidden">ACCESS DENIED. INCORRECT KEY CODE.</p>
+            </div>
+
+            <!-- Gallery Grid (Hidden by default) -->
+            <div class="gallery-grid hidden" id="gallery-grid">
                 <!-- Gallery items will be injected by JavaScript -->
             </div>
         </section>
@@ -629,6 +695,35 @@
         const galleryGrid = document.getElementById('gallery-grid');
         
         let currentIndex = 0;
+        const formContainer = document.getElementById('admissionFormContainer');
+        const preQualification = document.getElementById('preQualification');
+
+        // NEW FUNCTION: Simulates a passed pre-test and shows the form
+        window.startPreTest = () => {
+            preQualification.classList.add('hidden');
+            formContainer.classList.remove('hidden');
+            // Optional: You can show a modal confirmation here if desired, but showing the form is enough.
+        };
+
+        // NEW FUNCTION: Gallery Unlock Logic
+        window.unlockGallery = () => {
+            const passwordInput = document.getElementById('galleryPassword');
+            const lockScreen = document.getElementById('galleryLockScreen');
+            const errorElement = document.getElementById('galleryLockError');
+            const password = passwordInput.value.trim().toLowerCase();
+            const correctPassword = 'imooma army';
+
+            if (password === correctPassword) {
+                lockScreen.classList.add('hidden');
+                galleryGrid.classList.remove('hidden');
+                errorElement.classList.add('hidden');
+                showModal("Access Granted!", "Welcome, Imooma Warrior! The full gallery is now visible.", false);
+            } else {
+                errorElement.classList.remove('hidden');
+                showModal("Access Denied!", "The Key Code is incorrect. Only authorized personnel may view the full gallery.", false);
+            }
+        };
+
 
         // UPDATED: Now takes HTML content and an optional flag for navigation modal styling
         function showModal(title, contentHTML, isNav=false) {
@@ -644,12 +739,25 @@
             }
             
             document.getElementById('messageModal').classList.remove('hidden');
-            document.getElementById('modal-backdrop').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.remove('hidden');
         }
         window.closeModal = () => {
             document.getElementById('messageModal').classList.add('hidden');
             document.getElementById('modal-backdrop').classList.add('hidden');
         };
+
+        // Function to show the urgent briefing modal
+        function showUrgentBriefing() {
+            const urgentModal = document.getElementById('urgentBriefingModal');
+            if (urgentModal) {
+                urgentModal.classList.remove('hidden');
+                // The modal has an animation that makes it fade out after 3 seconds (as requested)
+                setTimeout(() => {
+                    urgentModal.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
 
         // Navigation Logic
         function navigateTo(pageId) {
@@ -723,7 +831,7 @@
             }
 
             updateCarousel();
-            // CHANGED: Slider speed reduced from 3000ms to 2000ms
+            // CHANGED: Slider speed is 2000ms (2 seconds)
             setInterval(() => {
                 const totalItems = document.querySelectorAll('.carousel-item').length;
                 currentIndex = (currentIndex + 1) % totalItems;
@@ -745,6 +853,9 @@
 
         // --- Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
+            // SHOW THE URGENT BRIEFING POPUP ON LOAD
+            showUrgentBriefing(); 
+
             // Check for hash and navigate on load
             const initialPage = window.location.hash ? window.location.hash.substring(1) : 'home';
             navigateTo(initialPage);
@@ -774,6 +885,8 @@
             window.openAdmissionForm = (type) => {
                 document.getElementById('admissionType').value = type;
                 navigateTo('admission');
+                // Ensure the form is shown if navigating directly from a hostel button
+                startPreTest();
             };
         });
 
