@@ -79,10 +79,32 @@
             main.container { padding-bottom: 70px; }
             .carousel-container { height: 40vh; }
             .carousel-item { height: 40vh; }
-            /* Mobile CTA Text Fix */
+            
+            /* Mobile CTA Text Fix (Further Reduction for better fit) */
             .cta-button-mobile-fix {
-                padding: 1rem 1.5rem; /* Reduce padding */
-                font-size: 0.875rem; /* Reduce font size to text-sm */
+                padding: 0.75rem 1rem; /* Padding kam kiya */
+                font-size: 0.75rem; /* Font size text-xs jitna kiya */
+            }
+
+            /* NEW: Reduce prominent text elements on mobile */
+            .stat-number {
+                font-size: 1.875rem; /* text-3xl on mobile (Pehle se tha) */
+            }
+            .stat-label {
+                font-size: 0.75rem; /* text-xs on mobile (Pehle se tha) */
+            }
+            
+            /* Guru Ji's Vachan Title (Reduced from text-2xl to text-xl equivalent) */
+            #tba-branding h2 {
+                font-size: 1.5rem; 
+            }
+            /* Guru Ji's Vachan Quote (Reduced from text-xl to text-lg equivalent) */
+            #tba-branding p.italic {
+                font-size: 1.125rem; 
+            }
+            /* Card Titles (Reduced from text-xl to text-lg equivalent) */
+            #homePage .grid h3 {
+                font-size: 1.125rem; 
             }
         }
     </style>
@@ -155,11 +177,47 @@
 
             <!-- PROMINENT CTA AFTER CAROUSEL (Moved here as text overlay was removed) -->
             <div class="text-center mb-12 fade-in">
-                <!-- Added class 'cta-button-mobile-fix' for responsive text size -->
-                <a href="#admission" data-page="admission" class="nav-link bg-danger text-white font-black py-4 px-12 rounded-full shadow-extreme hover:bg-danger/80 transition-all duration-300 text-lg uppercase tracking-wider cta-button-mobile-fix">
-                    MISSION REGISTRATION: ENROLL NOW
+                <!-- TEXT and SIZE ADJUSTED: Text is now 'APPLY NOW' and size is md:text-sm text-sm -->
+                <a href="#admission" data-page="admission" class="nav-link bg-danger text-white font-black py-4 px-12 rounded-full shadow-extreme hover:bg-danger/80 transition-all duration-300 md:text-sm text-sm uppercase tracking-wider cta-button-mobile-fix">
+                    APPLY NOW
                 </a>
             </div>
+
+            <!-- 💥 NEW SECTION: WAR STATISTICS FOR PRADHAN 💥 -->
+            <div class="bg-blue-dark text-white p-6 rounded-xl shadow-extreme mb-12 fade-in">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gold text-center mb-6">
+                    OUR WAR STATISTICS: THE NUMBERS OF DOMINATION
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    
+                    <!-- Stat 1: Attendance/Discipline -->
+                    <div>
+                        <p class="text-danger text-4xl md:text-5xl font-extrabold stat-number">99.8%</p>
+                        <p class="text-gray-300 uppercase font-semibold text-sm stat-label">Class Attendance</p>
+                    </div>
+
+                    <!-- Stat 2: Testing Rigor -->
+                    <div>
+                        <p class="text-danger text-4xl md:text-5xl font-extrabold stat-number">200+</p>
+                        <p class="text-gray-300 uppercase font-semibold text-sm stat-label">Daily Assessments</p>
+                    </div>
+
+                    <!-- Stat 3: Study Hours -->
+                    <div>
+                        <p class="text-danger text-4xl md:text-5xl font-extrabold stat-number">14 Hrs.</p>
+                        <p class="text-gray-300 uppercase font-semibold text-sm stat-label">Avg. Study per Day</p>
+                    </div>
+
+                    <!-- Stat 4: Success Rate -->
+                    <div>
+                        <p class="text-danger text-4xl md:text-5xl font-extrabold stat-number">50+</p>
+                        <p class="text-gray-300 uppercase font-semibold text-sm stat-label">UPSC/IIT Selections</p>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 💥 END WAR STATISTICS 💥 -->
+
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 <!-- Card 1: Discipline -->
@@ -208,7 +266,8 @@
                 <!-- Principal Section -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="text-center md:col-span-1 fade-in">
-                        <img src="https://placehold.co/200x250/003366/ffc107?text=CHAIRMAN+SIR" alt="Founder & Chairman" class="rounded-xl w-48 h-auto mx-auto mb-4 shadow-hard">
+                        <!-- UPDATED: Chairman's photo URL changed -->
+                        <img src="https://i.ibb.co/zWYs10Vp/Screenshot-2025-12-01-030054.png" alt="Founder & Chairman" class="rounded-xl w-48 h-auto mx-auto mb-4 shadow-hard">
                         <h3 class="text-2xl font-bold text-blue-dark">Jaishanker Kumar</h3>
                         <p class="text-danger font-semibold">Founder & Chairman (Since 2020)</p>
                     </div>
@@ -231,8 +290,7 @@
             </div>
         </section>
 
-
-        <!-- Academics Page (Content Fill) -->
+        <!-- ACADEMICS Page -->
         <section id="academicsPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Academics & The War Plan</h1>
             <div class="bg-white p-8 rounded-xl shadow-extreme mb-8">
@@ -263,7 +321,7 @@
             </div>
         </section>
 
-        <!-- Hostel Page (Content Fill) -->
+        <!-- HOSTEL Page -->
         <section id="hostelPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Hostel & Living Quarters</h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -288,7 +346,7 @@
             </div>
         </section>
 
-        <!-- Admission Page (WhatsApp Integration) -->
+        <!-- ADMISSION Page -->
         <section id="admissionPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Mission Application Center</h1>
             <div class="bg-white p-8 rounded-xl shadow-extreme max-w-2xl mx-auto">
@@ -335,15 +393,16 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="w-full bg-danger text-white font-black py-3 rounded-full shadow-extreme hover:bg-danger/80 transition-all duration-300 flex items-center justify-center space-x-2">
+                    <button type="submit" class="w-full bg-danger text-white font-black py-3 rounded-full shadow-extreme hover:bg-danger/80 transition-all duration-300 flex items-center justify-center space-x-2 text-sm md:text-base">
                         <i class="ri-whatsapp-fill text-2xl"></i>
-                        <span>SEND APPLICATION VIA WHATSAPP</span>
+                        <!-- Text changed to be shorter -->
+                        <span>WHATSAPP APPLICATION NOW</span>
                     </button>
                 </form>
             </div>
         </section>
 
-        <!-- Gallery Page (Content Fill) -->
+        <!-- GALLERY Page -->
         <section id="galleryPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">School Gallery: Where Warriors Are Forged</h1>
             <p class="text-center text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -353,16 +412,150 @@
                 <!-- Gallery items will be injected by JavaScript -->
             </div>
         </section>
+        
+        <!-- NEW: IMOOMA THOUGHTS Page -->
+        <section id="thoughtPage" class="page">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">IMOOMA THOUGHTS: The Fuel for Fearlessness</h1>
+            <div class="bg-white p-8 rounded-xl shadow-extreme">
+                <p class="text-danger font-bold text-center mb-6">Daily motivation forged in the fire of discipline.</p>
+                
+                <div class="space-y-6 text-gray-800" id="thought-list">
+                    
+                    <!-- Thought 1 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">1. The only shortcut is hard work.</p>
+                        <p class="text-sm italic text-gray-600">एकमात्र शॉर्टकट कठिन परिश्रम है।</p>
+                    </div>
+                    
+                    <!-- Thought 2 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">2. Conquer your mind, conquer your world.</p>
+                        <p class="text-sm italic text-gray-600">अपने मन पर विजय पाओ, अपनी दुनिया पर विजय पाओ।</p>
+                    </div>
+                    
+                    <!-- Thought 3 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">3. Discipline is the bridge between goals and achievement.</p>
+                        <p class="text-sm italic text-gray-600">अनुशासन लक्ष्यों और उपलब्धि के बीच का सेतु है।</p>
+                    </div>
+                    
+                    <!-- Thought 4 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">4. Fear is temporary, regret is forever.</p>
+                        <p class="text-sm italic text-gray-600">डर अस्थायी है, पछतावा हमेशा के लिए है।</p>
+                    </div>
+                    
+                    <!-- Thought 5 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">5. The silence after a victory is the loudest applause.</p>
+                        <p class="text-sm italic text-gray-600">जीत के बाद की शांति सबसे तेज़ ताली होती है।</p>
+                    </div>
+                    
+                    <!-- Thought 6 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">6. Consistency fuels destiny.</p>
+                        <p class="text-sm italic text-gray-600">स्थिरता ही नियति को शक्ति देती है।</p>
+                    </div>
+                    
+                    <!-- Thought 7 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">7. Every failure is a training session for success.</p>
+                        <p class="text-sm italic text-gray-600">हर विफलता सफलता के लिए एक प्रशिक्षण सत्र है।</p>
+                    </div>
+                    
+                    <!-- Thought 8 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">8. Do not wish for it, work for it.</p>
+                        <p class="text-sm italic text-gray-600">इसकी इच्छा मत करो, इसके लिए काम करो।</p>
+                    </div>
+                    
+                    <!-- Thought 9 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">9. The toughest opponent is your own hesitation.</p>
+                        <p class="text-sm italic text-gray-600">सबसे कठिन विरोधी आपका अपना संकोच है।</p>
+                    </div>
+                    
+                    <!-- Thought 10 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">10. Build silence into your study. Focus is power.</p>
+                        <p class="text-sm italic text-gray-600">अपनी पढ़ाई में चुप्पी साधो। एकाग्रता ही शक्ति है।</p>
+                    </div>
+                    
+                    <!-- Thought 11 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">11. Your effort defines your worth.</p>
+                        <p class="text-sm italic text-gray-600">आपका प्रयास ही आपका मूल्य निर्धारित करता है।</p>
+                    </div>
+                    
+                    <!-- Thought 12 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">12. Greatness is not inherited, it is earned daily.</p>
+                        <p class="text-sm italic text-gray-600">महानता विरासत में नहीं मिलती, यह रोज़ कमाई जाती है।</p>
+                    </div>
+                    
+                    <!-- Thought 13 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">13. Stop making excuses, start making results.</p>
+                        <p class="text-sm italic text-gray-600">बहाने बनाना बंद करो, परिणाम देना शुरू करो।</p>
+                    </div>
+                    
+                    <!-- Thought 14 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">14. Study like a soldier, sleep like a king.</p>
+                        <p class="text-sm italic text-gray-600">एक सिपाही की तरह पढ़ो, एक राजा की तरह सोओ।</p>
+                    </div>
+                    
+                    <!-- Thought 15 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">15. Logic will get you from A to B. Discipline takes you to Z.</p>
+                        <p class="text-sm italic text-gray-600">तर्क आपको A से B तक ले जाएगा। अनुशासन आपको Z तक ले जाएगा।</p>
+                    </div>
+                    
+                    <!-- Thought 16 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">16. The comfort zone is where dreams go to die.</p>
+                        <p class="text-sm italic text-gray-600">आराम क्षेत्र वह जगह है जहाँ सपने मर जाते हैं।</p>
+                    </div>
+                    
+                    <!-- Thought 17 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">17. Respect the process, and the result will respect you.</p>
+                        <p class="text-sm italic text-gray-600">प्रक्रिया का सम्मान करें, और परिणाम आपका सम्मान करेगा।</p>
+                    </div>
+                    
+                    <!-- Thought 18 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">18. Attack your weakness with brutal honesty.</p>
+                        <p class="text-sm italic text-gray-600">अपनी कमज़ोरी पर क्रूर ईमानदारी से हमला करो।</p>
+                    </div>
+                    
+                    <!-- Thought 19 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">19. Success is not a destination, it is a commitment.</p>
+                        <p class="text-sm italic text-gray-600">सफलता एक गंतव्य नहीं है, यह एक प्रतिबद्धता है।</p>
+                    </div>
+                    
+                    <!-- Thought 20 -->
+                    <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-danger shadow-md">
+                        <p class="font-bold text-blue-dark mb-1">20. Today's sacrifice is tomorrow's victory march.</p>
+                        <p class="text-sm italic text-gray-600">आज का बलिदान कल की विजय यात्रा है।</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
 
-        <!-- Contact Page (WhatsApp Integration) -->
+
+        <!-- CONTACT Page -->
         <section id="contactPage" class="page">
             <h1 class="text-3xl md:text-4xl font-bold text-blue-dark text-center mb-8 fade-in">Contact & Command Center</h1>
             <div class="bg-white p-8 rounded-xl shadow-extreme max-w-2xl mx-auto">
                 <h2 class="text-2xl font-bold text-blue-dark mb-4">Direct Line to the Chairman's Office</h2>
                 <p class="mb-6 text-danger font-semibold">For urgent queries, please use the WhatsApp line below for immediate response.</p>
                 
-                <a href="https://wa.me/917004261546" target="_blank" class="w-full bg-green-600 text-white font-black py-3 rounded-full shadow-extreme hover:bg-green-700 transition-all duration-300 flex items-center justify-center space-x-2">
+                <a href="https://wa.me/917004261546" target="_blank" class="w-full bg-green-600 text-white font-black py-3 rounded-full shadow-extreme hover:bg-green-700 transition-all duration-300 flex items-center justify-center space-x-2 text-sm md:text-base">
                         <i class="ri-whatsapp-fill text-2xl"></i>
+                        <!-- Text size reduced -->
                         <span>URGENT WHATSAPP LINE: 7004261546</span>
                 </a>
                 
@@ -451,7 +644,7 @@
             }
             
             document.getElementById('messageModal').classList.remove('hidden');
-            document.getElementById('modal-backdrop').classList.remove('hidden');
+            document.getElementById('modal-backdrop').classList.add('hidden');
         }
         window.closeModal = () => {
             document.getElementById('messageModal').classList.add('hidden');
@@ -479,6 +672,7 @@
                 { page: 'admission', icon: 'ri-edit-line', text: 'Admission / Apply' },
                 { page: 'gallery', icon: 'ri-image-line', text: 'Gallery' },
                 { page: 'contact', icon: 'ri-phone-line', text: 'Contact' },
+                { page: 'thought', icon: 'ri-lightbulb-line', text: 'IMOOMA THOUGHTS' }, // NEW THOUGHTS PAGE
                 // Chairman's Office is here too in case the user prefers the list view
                 { page: 'guru', icon: 'ri-user-2-line', text: 'Chairman\'s Office' } 
             ];
@@ -529,11 +723,12 @@
             }
 
             updateCarousel();
+            // CHANGED: Slider speed reduced from 3000ms to 2000ms
             setInterval(() => {
                 const totalItems = document.querySelectorAll('.carousel-item').length;
                 currentIndex = (currentIndex + 1) % totalItems;
                 updateCarousel();
-            }, 4000);
+            }, 2000);
         }
 
         // Gallery Load Logic
